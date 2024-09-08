@@ -12,8 +12,12 @@ const config: Config = {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      container: {
+        center: true,
+      },
     },
   },
-  plugins: [],
+  //plugins: [daisyui],
+  plugins: [require("daisyui")],
 };
 export default config;
