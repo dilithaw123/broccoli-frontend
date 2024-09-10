@@ -1,5 +1,8 @@
 "use server";
 
+import { cookies } from "next/headers";
+import SessionCarousel from "./components/session_carousel";
+
 async function startSession(groupId: string): Promise<number> {
 	const groupIdNumber = parseInt(groupId);
 	if (isNaN(groupIdNumber)) {
@@ -19,14 +22,39 @@ async function startSession(groupId: string): Promise<number> {
 	return data.id;
 }
 
-export default async function SessionPage(props: { params: { id: string }, searchParams: { [key: string]: string } }) {
+async function getUserIdFromCookies() {
+	const token = cookies().get("session");
+	if (!token) {
+		throw new Error("Unauthorized");
+	}
+	const json = JSON.parse(token.value);
+	if (!json.id) {
+		throw new Error("Unauthorized");
+	}
+	return json.id;
+}
+
+type Params = {
+	id: string;
+}
+
+type SearchParams = {
+	group: string;
+}
+
+export default async function SessionPage(props: { params: Params, searchParams: SearchParams }) {
 	const groupName = props.searchParams.group;
 	const groupId = props.params.id;
 	const sessionId = await startSession(groupId);
+	const userId = await getUserIdFromCookies();
 
 	return (
 		<div className="h-full p-10">
-			<h1 className="text-4xl font-bold mb-10">Session for group {groupName}</h1>
-		</div>
+			<div className="flex justify-between items-center flex-row">
+				<h1 className="text-4xl font-bold mb-10">Session for group {groupName}</h1>
+			</div>
+
+			<SessionCarousel sessionId={sessionId} userId={userId} />
+		</div >
 	);
 }

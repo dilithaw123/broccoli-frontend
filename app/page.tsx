@@ -26,7 +26,6 @@ async function getGroups(): Promise<Group[]> {
 
 export default async function Home() {
   const groups = await getGroups();
-
   return (
     <div className="h-full p-10">
       <h1 className="text-4xl font-bold mb-10">Welcome to Broccoli Standups!</h1>
