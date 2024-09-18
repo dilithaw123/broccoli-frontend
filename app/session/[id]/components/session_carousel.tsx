@@ -14,7 +14,6 @@ type UserSubmission = {
 	yesterday: string[];
 	today: string[];
 	blockers: string[];
-
 }
 
 
@@ -78,9 +77,9 @@ export default function SessionCarousel(props: Props): JSX.Element {
 					<h3 className="font-bold text-lg">Hello!</h3>
 					<p className="py-4">Press ESC key or click outside to close</p>
 					<form method="POST" className="modal-backdrop" onSubmit={submitForm}>
-						<textarea name="yesterday" placeholder="Yesterday" />
-						<textarea name="today" placeholder="Today" />
-						<textarea name="blockers" placeholder="Blockers" />
+						<textarea name="yesterday" placeholder="Yesterday" className="textarea" />
+						<textarea name="today" placeholder="Today" className="textarea" />
+						<textarea name="blockers" placeholder="Blockers" className="textarea" />
 						<br />
 						<button type="submit" className="btn btn-primary">Submit</button>
 					</form>

@@ -14,6 +14,7 @@ async function startSession(groupId: string): Promise<number> {
 			"Content-Type": "application/json",
 		},
 		body: JSON.stringify({ groupId: groupIdNumber }),
+
 	});
 	const data = await response.json();
 	if (!data.id) {

@@ -12,10 +12,14 @@ type Group = {
   allowed_emails: string[];
 };
 
-async function getGroups(): Promise<Group[]> {
+type User = {
+  email: string;
+  id: number;
+  name: string;
+};
+
+async function getGroups(user: User): Promise<Group[]> {
   "use server";
-  const session = cookies().get("session");
-  const user = JSON.parse(session?.value || "{}");
   if (!user.email) return [];
   const response = await fetch(`${process.env.BACKEND_URL}/user/group?email=${user.email}`);
   if (!response.ok) {
@@ -25,12 +29,14 @@ async function getGroups(): Promise<Group[]> {
 }
 
 export default async function Home() {
-  const groups = await getGroups();
+  const session = cookies().get("session");
+  const user: User = JSON.parse(session?.value || "{}");
+  const groups = await getGroups(user);
   return (
     <div className="h-full p-10">
       <h1 className="text-4xl font-bold mb-10">Welcome to Broccoli Standups!</h1>
       <h2 className="text-2xl font-semibold">Your groups:</h2>
-      <GroupsView groups={groups} />
+      <GroupsView groups={groups} email={user.email} />
     </div>
   );
 }
