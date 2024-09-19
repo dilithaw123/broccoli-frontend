@@ -76,7 +76,7 @@ export function GroupsView(props: Props) {
 							<h2 className="text-2xl font-semibold mb-3">{group.name}</h2>
 							<button className="btn btn-primary" onClick={() => startSession(group.id, group.name)}>Start session</button>
 							<form method="POST" onSubmit={inviteUser}>
-								<input type="email" name="email" placeholder="Email" className="input input-bordered mr-5" />
+								<input type="email" name="email" placeholder="Email" className="input input-bordered input-secondary mr-5" />
 								<input type="hidden" name="group_id" value={group.id} />
 								<button type="submit" className="btn btn-secondary">Invite</button>
 							</form>

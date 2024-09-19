@@ -17,6 +17,23 @@ const config: Config = {
       },
     },
   },
+  daisyui: {
+    themes: [
+      {
+        brocTheme: {
+          primary: "#7ab374",
+          secondary: "#8cb388",
+          accent: "#a0b59e",
+          neutral: "#374151",
+          "base-100": "#111827",
+          info: "#00c4df",
+          success: "#00f191",
+          warning: "#ff8c00",
+          error: "#ff638a",
+        },
+      },
+    ],
+  },
   //plugins: [daisyui],
   plugins: [require("daisyui")],
 };
