@@ -21,7 +21,12 @@ type User = {
 async function getGroups(user: User): Promise<Group[]> {
   "use server";
   if (!user.email) return [];
-  const response = await fetch(`${process.env.BACKEND_URL}/user/group?email=${user.email}`);
+  const response = await fetch(`${process.env.BACKEND_URL}/user/group?email=${user.email}`, {
+    method: "GET",
+    headers: {
+      Cookie: cookies().toString()
+    },
+  });
   if (!response.ok) {
     throw new Error("Internal server error");
   }

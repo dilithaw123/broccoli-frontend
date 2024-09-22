@@ -1,6 +1,17 @@
 import { cookies } from "next/headers";
 import { redirect } from "next/navigation";
 
+type response = {
+  user: {
+    id: number;
+    name: string;
+    email: string;
+  }
+  access_token: string;
+  refresh_token: string;
+}
+
+
 export async function handleSubmit(formData: FormData) {
   'use server';
   const displayName = formData.get("displayName") as string;
@@ -22,11 +33,21 @@ export async function handleSubmit(formData: FormData) {
         throw new Error("Internal server error");
     }
   }
-  const json = await response.json();
+  const json: response = await response.json();
   console.log(json);
-  cookies().set("session", JSON.stringify(json), {
+  cookies().set("session", JSON.stringify(json.user), {
     httpOnly: true,
     sameSite: "strict",
+    expires: Date.now() * (1000 * 60 * 60 * 24)
+  });
+  cookies().set("access-token", json.access_token, {
+    httpOnly: true,
+    sameSite: "strict",
+  });
+  cookies().set("refresh-token", json.refresh_token, {
+    httpOnly: true,
+    sameSite: "strict",
+    expires: Date.now() * (1000 * 60 * 60 * 24)
   });
   redirect("/");
 }

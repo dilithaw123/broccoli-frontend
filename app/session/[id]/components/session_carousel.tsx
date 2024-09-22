@@ -22,7 +22,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 
 	useEffect(() => {
 		if (!process.env.NEXT_PUBLIC_WEBSOCKET_URL) throw new Error("NEXT_PUBLIC_WEBSOCKET_URL not set");
-		const websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/ws/session/${props.sessionId}`);
+		const websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/session/${props.sessionId}`);
 		websocket.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 			if (Array.isArray(data)) {

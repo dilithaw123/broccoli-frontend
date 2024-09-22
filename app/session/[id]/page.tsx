@@ -12,6 +12,7 @@ async function startSession(groupId: string): Promise<number> {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",
+			Cookie: cookies.toString(),
 		},
 		body: JSON.stringify({ groupId: groupIdNumber }),
 
