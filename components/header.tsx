@@ -4,8 +4,8 @@ import { redirect } from "next/navigation";
 async function logout() {
 	"use server";
 	cookies().delete("session");
-	cookies().delete("access-token");
-	cookies().delete("refresh-token");
+	cookies().delete("access_token");
+	cookies().delete("refresh_token");
 	redirect("/login");
 }
 

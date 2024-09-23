@@ -28,6 +28,7 @@ async function getGroups(user: User): Promise<Group[]> {
     },
   });
   if (!response.ok) {
+    console.log(await response.text());
     throw new Error("Internal server error");
   }
   return await response.json();

@@ -62,8 +62,6 @@ export default function SessionCarousel(props: Props): JSX.Element {
 			body: JSON.stringify({
 				...data,
 			}),
-			// TODO: remove this line
-			mode: "no-cors",
 		});
 		if (response.ok) {
 			closeModal();
