@@ -40,11 +40,11 @@ export async function handleSubmit(formData: FormData) {
     sameSite: "strict",
     expires: Date.now() * (1000 * 60 * 60 * 24)
   });
-  cookies().set("access-token", json.access_token, {
+  cookies().set("access_token", json.access_token, {
     httpOnly: true,
     sameSite: "strict",
   });
-  cookies().set("refresh-token", json.refresh_token, {
+  cookies().set("refresh_token", json.refresh_token, {
     httpOnly: true,
     sameSite: "strict",
     expires: Date.now() * (1000 * 60 * 60 * 24)

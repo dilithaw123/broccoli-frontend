@@ -35,37 +35,37 @@ export function GroupsView(props: Props) {
 		const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/group/user/add", {
 			method: "POST",
 			body: JSON.stringify({ group_id: +group_id, email, request_email: props.email }),
-			// TODO: Fix this
-			mode: "no-cors",
 			headers: {
 				"Content-Type": "application/json",
 			},
 		});
 		if (!response.ok) {
 			alert("Failed to invite user");
+		} else {
+			form.reset()
 		}
 
 	};
 
-	async function deleteGroup(id: string) {
-		const answer = confirm("Are you sure you want to delete this group?");
-		if (!answer) {
-			return;
-		}
-		const group_id = +id;
-		const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/group", {
-			method: "DELETE",
-			body: JSON.stringify({ group_id, user_email: props.email }),
-			headers: {
-				"Content-Type": "application/json",
-			},
-		});
-
-		if (!response.ok) {
-			const text = await response.text();
-			alert("Failed to delete group: " + text);
-		}
-	}
+	//async function deleteGroup(id: string) {
+	//	const answer = confirm("Are you sure you want to delete this group?");
+	//	if (!answer) {
+	//		return;
+	//	}
+	//	const group_id = +id;
+	//	const response = await fetch(process.env.NEXT_PUBLIC_BACKEND_URL + "/group", {
+	//		method: "DELETE",
+	//		body: JSON.stringify({ group_id, user_email: props.email }),
+	//		headers: {
+	//			"Content-Type": "application/json",
+	//		},
+	//	});
+	//
+	//	if (!response.ok) {
+	//		const text = await response.text();
+	//		alert("Failed to delete group: " + text);
+	//	}
+	//}
 
 	return (
 		<>
@@ -80,7 +80,9 @@ export function GroupsView(props: Props) {
 								<input type="hidden" name="group_id" value={group.id} />
 								<button type="submit" className="btn btn-secondary">Invite</button>
 							</form>
+							{/*
 							<button className="btn btn-error" onClick={() => deleteGroup(group.id)}>Delete Group</button>
+							*/}
 						</div>
 					</div >
 				))
