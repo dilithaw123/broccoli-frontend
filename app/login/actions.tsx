@@ -17,11 +17,14 @@ export async function handleSubmit(formData: FormData) {
   const displayName = formData.get("displayName") as string;
   const email = formData.get("email") as string;
   const data = { name: displayName, email: email };
-  console.log("Request", data);
+  if (!process.env.API_KEY) {
+    return;
+  }
   const response = await fetch(`${process.env.BACKEND_URL}/login`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
+      "X-API-KEY": process.env.API_KEY,
     },
     body: JSON.stringify(data),
   });

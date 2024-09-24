@@ -54,7 +54,6 @@ export default async function SessionPage(props: { params: Params, searchParams:
 			<div className="flex justify-between items-center flex-row">
 				<h1 className="text-4xl font-bold mb-10">Session for group {groupName}</h1>
 			</div>
-
 			<SessionCarousel sessionId={sessionId} userId={userId} />
 		</div >
 	);

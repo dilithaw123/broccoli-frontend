@@ -42,6 +42,14 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		(document.getElementById('sub_modal') as HTMLDialogElement).close();
 	}
 
+	function shuffle() {
+		let shuffled = submissions
+			.map(value => ({ value, sort: Math.random() }))
+			.sort((a, b) => a.sort - b.sort)
+			.map(({ value }) => value)
+		setSubmissions(shuffled)
+	}
+
 	async function submitForm(event: React.FormEvent<HTMLFormElement>) {
 		event.preventDefault();
 		const form = event.currentTarget as HTMLFormElement;
@@ -85,8 +93,11 @@ export default function SessionCarousel(props: Props): JSX.Element {
 					<button>close</button>
 				</form>
 			</dialog>
-			<div className="flex justify-between items-center flex-col self-center items-center">
-				<button className="btn" onClick={openModal}>Check In</button>
+			<div className="flex justify-between items-center flex-col self-center items-center space-y-2">
+				<div className="flex flex-row space-x-3">
+					<button className="btn btn-secondary" onClick={shuffle}>Shuffle</button>
+					<button className="btn btn-secondary" onClick={openModal}>Check In</button>
+				</div>
 				<div className="carousel rounded-box w-2/3 h-3/4 border-secondary">
 					<h3 className="text-center font-bold text-lg">No submissions - Go on, write something!</h3>
 					{submissions.map((submission, ind) => (
@@ -136,5 +147,4 @@ export default function SessionCarousel(props: Props): JSX.Element {
 			</div >
 		</>
 	);
-
 }
