@@ -71,7 +71,7 @@ export function GroupsView(props: Props) {
 		<>
 			{
 				props.groups?.map((group) => (
-					<div key={group.id} className="p-5 m-5 border-2 border-gray-200 rounded-md">
+					<div key={group.id} className="p-5 m-5 border-2 border-gray-200 rounded-md items-center">
 						<div className="flex flex-row space-x-4">
 							<h2 className="text-2xl font-semibold mb-3">{group.name}</h2>
 							<button className="btn btn-primary" onClick={() => startSession(group.id, group.name)}>Start session</button>

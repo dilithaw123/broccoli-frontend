@@ -39,8 +39,7 @@ export default async function Home() {
   const user: User = JSON.parse(session?.value || "{}");
   const groups = await getGroups(user);
   return (
-    <div className="h-full p-10">
-      <h1 className="text-4xl font-bold mb-10">Welcome to Broccoli Standups!</h1>
+    <div className="min-h-screen p-10">
       <h2 className="text-2xl font-semibold">Your groups:</h2>
       <GroupsView groups={groups} email={user.email} />
     </div>

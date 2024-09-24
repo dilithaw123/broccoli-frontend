@@ -9,8 +9,7 @@ async function startSession(groupId: string): Promise<number> {
 		throw new Error("Invalid group ID");
 	}
 	const response = await fetch(`${process.env.BACKEND_URL}/session`, {
-		method: "POST",
-		headers: {
+		method: "POST", headers: {
 			"Content-Type": "application/json",
 			Cookie: cookies().toString(),
 		},
@@ -51,7 +50,7 @@ export default async function SessionPage(props: { params: Params, searchParams:
 	const userId = await getUserIdFromCookies();
 
 	return (
-		<div className="h-full p-10">
+		<div className="p-10">
 			<div className="flex justify-between items-center flex-row">
 				<h1 className="text-4xl font-bold mb-10">Session for group {groupName}</h1>
 			</div>

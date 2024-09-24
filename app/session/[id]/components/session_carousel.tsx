@@ -72,12 +72,11 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		<>
 			<dialog id="sub_modal" className="modal">
 				<div className="modal-box">
-					<h3 className="font-bold text-lg">Hello!</h3>
-					<p className="py-4">Press ESC key or click outside to close</p>
-					<form method="POST" className="modal-backdrop" onSubmit={submitForm}>
-						<textarea name="yesterday" placeholder="Yesterday" className="textarea" />
-						<textarea name="today" placeholder="Today" className="textarea" />
-						<textarea name="blockers" placeholder="Blockers" className="textarea" />
+					<p className="">Press ESC key or click outside to close</p>
+					<form method="POST" className="dialog flex flex-col space-y-2" onSubmit={submitForm}>
+						<textarea name="yesterday" placeholder="Yesterday" className="textarea textarea-primary" />
+						<textarea name="today" placeholder="Today" className="textarea textarea-primary" />
+						<textarea name="blockers" placeholder="Blockers" className="textarea textarea-primary" />
 						<br />
 						<button type="submit" className="btn btn-primary">Submit</button>
 					</form>
@@ -88,35 +87,42 @@ export default function SessionCarousel(props: Props): JSX.Element {
 			</dialog>
 			<div className="flex justify-between items-center flex-col self-center items-center">
 				<button className="btn" onClick={openModal}>Check In</button>
-				<div className="carousel rounded-box w-2/3 h-2/3">
+				<div className="carousel rounded-box w-2/3 h-3/4 border-secondary">
 					<h3 className="text-center font-bold text-lg">No submissions - Go on, write something!</h3>
-					{submissions.map((submission) => (
-						<div className="carousel-item w-full flex flex-col self-center" key={submission.user_id} id={submission.name}>
-							<h1 className="text-5xl font-bold">{submission.name}</h1>
-							<div className="flex flex-col gap-2">
-								<h2 className="text-3xl font-bold">Yesterday</h2>
-								<ul>
-									{submission.yesterday.map((item, ind) => (
-										<li key={ind}>{item}</li>
-									))}
-								</ul>
+					{submissions.map((submission, ind) => (
+						<div className="relative carousel-item w-full top-1/2 flex flex-col self-center min-h-full" key={submission.user_id} id={submission.name}>
+							<div className="absolute left-5 right-5 top-1/2 flex justify-between">
+								<a href={`#${submissions.at(ind - 1)?.name}`} className="btn btn-circle btn-secondary">❮</a>
+								<a href={`#${ind + 1 == submissions.length ? submissions.at(0)?.name : submissions.at(ind + 1)?.name}`} className="btn btn-circle btn-secondary">❯</a>
 							</div>
-							<div className="flex flex-col gap-2">
-								<h2 className="text-3xl font-bold">Today</h2>
-								<ul>
-									{submission.today.map((item, ind) => (
-										<li key={ind}>{item}</li>
-									))}
-								</ul>
+							<div className="self-center">
+								<h1 className="text-5xl font-bold">{submission.name}</h1>
+								<div className="flex flex-col gap-2">
+									<h2 className="text-3xl font-bold">Yesterday</h2>
+									<ul>
+										{submission.yesterday.map((item, ind) => (
+											<li key={ind}>{item}</li>
+										))}
+									</ul>
+								</div>
+								<div className="flex flex-col gap-2">
+									<h2 className="text-3xl font-bold">Today</h2>
+									<ul>
+										{submission.today.map((item, ind) => (
+											<li key={ind}>{item}</li>
+										))}
+									</ul>
+								</div>
+								<div className="flex flex-col gap-2">
+									<h2 className="text-3xl font-bold">Blockers</h2>
+									<ul>
+										{submission.blockers.map((item, ind) => (
+											<li key={ind}>{item}</li>
+										))}
+									</ul>
+								</div>
 							</div>
-							<div className="flex flex-col gap-2">
-								<h2 className="text-3xl font-bold">Blockers</h2>
-								<ul>
-									{submission.blockers.map((item, ind) => (
-										<li key={ind}>{item}</li>
-									))}
-								</ul>
-							</div>
+
 						</div>
 					))}
 				</div>
@@ -127,7 +133,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 						))}
 					</div>
 				}
-			</div>
+			</div >
 		</>
 	);
 
