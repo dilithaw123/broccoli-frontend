@@ -43,7 +43,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 	}
 
 	function shuffle() {
-		let shuffled = submissions
+		const shuffled = submissions
 			.map(value => ({ value, sort: Math.random() }))
 			.sort((a, b) => a.sort - b.sort)
 			.map(({ value }) => value)

@@ -22,12 +22,12 @@ export function GroupsView(props: Props) {
 		e.preventDefault();
 		const form = e.currentTarget;
 		const formData = new FormData(form);
-		let group_id = formData.get("group_id")?.toString();
+		const group_id = formData.get("group_id")?.toString();
 		if (!group_id) {
 			alert("Group ID not found");
 			return;
 		}
-		let email = formData.get("email")?.toString();
+		const email = formData.get("email")?.toString();
 		if (!email) {
 			alert("Email not found");
 			return;
