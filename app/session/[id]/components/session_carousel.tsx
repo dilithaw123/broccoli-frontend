@@ -42,12 +42,14 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		(document.getElementById('sub_modal') as HTMLDialogElement).close();
 	}
 
-	function shuffle() {
-		const shuffled = submissions
-			.map(value => ({ value, sort: Math.random() }))
-			.sort((a, b) => a.sort - b.sort)
-			.map(({ value }) => value)
-		setSubmissions(shuffled)
+	async function shuffle() {
+		const url = process.env.NEXT_PUBLIC_BACKEND_URL;
+		if (!url) {
+			return
+		}
+		await fetch(url + `/session/${props.sessionId}/shuffle`, {
+			method: "POST"
+		});
 	}
 
 	async function submitForm(event: React.FormEvent<HTMLFormElement>) {
