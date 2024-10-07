@@ -1,27 +1,24 @@
 import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
-  const accessToken = request.cookies.get("access_token");
-  const refreshToken = request.cookies.get("refresh_token");
-  if (!refreshToken?.value) {
-    return NextResponse.redirect(new URL("/login", request.url));
-  }
-  if (accessToken) {
-    const resp = await fetch(process.env.BACKEND_URL + "/user/authenticated", {
-      method: "GET",
-      headers: {
-        Cookie: request.cookies.toString(),
-      },
+  if (request.cookies.get("access_token")?.value) {
+    const cloned_req = new Request(request.url, {
+      redirect: "manual",
+      body: request.body,
+      headers: request.headers,
+      method: request.method,
     });
-    if (resp.ok) {
-      console.log("user is authenticated");
-      return NextResponse.next();
+
+    const ogResponse = await fetch(cloned_req);
+    if (ogResponse.status !== 401) {
+      return ogResponse;
     }
   }
   const email = JSON.parse(
     request.cookies.get("session")?.value || "{}",
   )?.email;
   if (!email) {
+    console.log("missing email");
     return NextResponse.redirect(new URL("/login", request.url));
   }
   const resp = await fetch(process.env.BACKEND_URL + "/user/refresh", {
@@ -29,13 +26,12 @@ export async function middleware(request: NextRequest) {
     headers: {
       Cookie: request.cookies.toString(),
     },
-    body: JSON.stringify({ refresh_token: refreshToken.value, email: email }),
+    body: JSON.stringify({ email: email }),
   });
   if (!resp.ok) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
   const data = await resp.json();
-  console.log(data.access_token);
   request.cookies.set("access_token", data.access_token);
   const response = NextResponse.next();
   if (!response.ok) {

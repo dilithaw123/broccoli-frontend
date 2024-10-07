@@ -26,11 +26,11 @@ async function startSession(groupId: string): Promise<number> {
 async function getUserIdFromCookies() {
 	const token = cookies().get("session");
 	if (!token) {
-		throw new Error("Unauthorized");
+		throw new Error("Missing session token");
 	}
 	const json = JSON.parse(token.value);
 	if (!json.id) {
-		throw new Error("Unauthorized");
+		throw new Error("Missing id in session token");
 	}
 	return json.id;
 }
