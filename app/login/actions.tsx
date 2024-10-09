@@ -40,17 +40,17 @@ export async function handleSubmit(formData: FormData) {
   cookies().set("session", JSON.stringify(json.user), {
     httpOnly: true,
     sameSite: "strict",
-    expires: Date.now() * (1000 * 3600 * 24 * 30)
+    maxAge: 3600 * 24 * 30,
   });
   cookies().set("access_token", json.access_token, {
     httpOnly: true,
     sameSite: "strict",
-    expires: Date.now() * (1000 * 3600)
+    maxAge: 3600,
   });
   cookies().set("refresh_token", json.refresh_token, {
     httpOnly: true,
     sameSite: "strict",
-    expires: Date.now() * (1000 * 3600 * 24 * 30)
+    maxAge: 3600 * 24 * 30,
   });
   redirect("/");
 }
