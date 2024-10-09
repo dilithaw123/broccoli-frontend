@@ -72,14 +72,16 @@ export function GroupsView(props: Props) {
 			{
 				props.groups?.map((group) => (
 					<div key={group.id} className="p-5 m-5 border-2 border-gray-200 rounded-md items-center">
-						<div className="flex flex-row space-x-4">
+						<div className="flex flex-row justify-between">
 							<h2 className="text-2xl font-semibold mb-3">{group.name}</h2>
-							<button className="btn btn-primary" onClick={() => startSession(group.id, group.name)}>Start session</button>
-							<form method="POST" onSubmit={inviteUser}>
-								<input type="email" name="email" placeholder="Email" className="input input-bordered input-secondary mr-5" />
-								<input type="hidden" name="group_id" value={group.id} />
-								<button type="submit" className="btn btn-secondary">Invite</button>
-							</form>
+							<div className="flex flex-row space-x-4">
+								<button className="btn btn-primary" onClick={() => startSession(group.id, group.name)}>Start session</button>
+								<form method="POST" onSubmit={inviteUser}>
+									<input type="email" name="email" placeholder="Email" className="input input-bordered input-secondary mr-5" />
+									<input type="hidden" name="group_id" value={group.id} />
+									<button type="submit" className="btn btn-secondary">Invite</button>
+								</form>
+							</div>
 							{/*
 							<button className="btn btn-error" onClick={() => deleteGroup(group.id)}>Delete Group</button>
 							*/}

@@ -1,3 +1,4 @@
+import { CreateGroup } from "@/components/createGroup";
 import { GroupsView } from "@/components/groups";
 import { Metadata } from "next";
 import { cookies } from "next/headers";
@@ -40,7 +41,10 @@ export default async function Home() {
   const groups = await getGroups(user);
   return (
     <div className="min-h-screen p-10">
-      <h2 className="text-2xl font-semibold">Your groups:</h2>
+
+      <div className="flex flex-row justify-between"> <h2 className="text-2xl font-semibold">Your groups:</h2>
+        <CreateGroup email={user.email} />
+      </div>
       <GroupsView groups={groups} email={user.email} />
     </div>
   );
