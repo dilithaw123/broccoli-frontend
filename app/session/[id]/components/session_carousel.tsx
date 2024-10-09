@@ -34,6 +34,21 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		}
 	}, []);
 
+	useEffect(() => {
+		const userSub = submissions.find((val) => val.user_id === +props.userId);
+		if (userSub?.yesterday) {
+			(document.getElementById("yesterday_box") as HTMLTextAreaElement).value = userSub?.yesterday.join('\n');
+		}
+		if (userSub?.today) {
+			(document.getElementById("today_box") as HTMLTextAreaElement).value = userSub?.today.join('\n');
+		}
+		if (userSub?.blockers) {
+			(document.getElementById("blockers_box") as HTMLTextAreaElement).value = userSub?.blockers.join('\n');
+		}
+
+
+	}, [submissions]);
+
 	function openModal() {
 		(document.getElementById('sub_modal') as HTMLDialogElement).showModal();
 	}
@@ -84,9 +99,9 @@ export default function SessionCarousel(props: Props): JSX.Element {
 				<div className="modal-box">
 					<p className="">Press ESC key or click outside to close</p>
 					<form method="POST" className="dialog flex flex-col space-y-2" onSubmit={submitForm}>
-						<textarea name="yesterday" placeholder="Yesterday" className="textarea textarea-primary" />
-						<textarea name="today" placeholder="Today" className="textarea textarea-primary" />
-						<textarea name="blockers" placeholder="Blockers" className="textarea textarea-primary" />
+						<textarea id="yesterday_box" name="yesterday" placeholder="Yesterday" className="textarea textarea-primary" />
+						<textarea id="today_box" name="today" placeholder="Today" className="textarea textarea-primary" />
+						<textarea id="blockers_box" name="blockers" placeholder="Blockers" className="textarea textarea-primary" />
 						<br />
 						<button type="submit" className="btn btn-primary">Submit</button>
 					</form>
