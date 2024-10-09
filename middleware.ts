@@ -2,16 +2,12 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function middleware(request: NextRequest) {
   if (request.cookies.get("access_token")?.value) {
-    const cloned_req = new Request(request.url, {
-      redirect: "manual",
-      body: request.body,
+    const resp = await fetch(process.env.BACKEND_URL + "/user/authenticated", {
+      method: "GET",
       headers: request.headers,
-      method: request.method,
     });
-
-    const ogResponse = await fetch(cloned_req);
-    if (ogResponse.status !== 401) {
-      return ogResponse;
+    if (resp.status !== 401) {
+      return NextResponse.next();
     }
   }
   const email = JSON.parse(
