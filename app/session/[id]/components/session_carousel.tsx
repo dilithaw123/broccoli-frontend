@@ -21,6 +21,32 @@ export default function SessionCarousel(props: Props): JSX.Element {
 	const [submissions, setSubmissions] = useState<UserSubmission[]>([]);
 
 	useEffect(() => {
+		const fetchInitial = async () => {
+			if (!process.env.NEXT_PUBLIC_BACKEND_URL) {
+				return;
+			}
+			const url = new URL(process.env.NEXT_PUBLIC_BACKEND_URL + '/user/submission');
+			url.searchParams.append("session_id", props.sessionId.toString());
+			url.searchParams.append("user_id", props.userId);
+			const resp = await fetch(url.toString());
+			if (!resp.ok) {
+				return;
+			}
+			const userSub = await resp.json();
+			if (userSub?.yesterday) {
+				(document.getElementById("yesterday_box") as HTMLTextAreaElement).value = userSub?.yesterday.join('\n');
+			}
+			if (userSub?.today) {
+				(document.getElementById("today_box") as HTMLTextAreaElement).value = userSub?.today.join('\n');
+			}
+			if (userSub?.blockers) {
+				(document.getElementById("blockers_box") as HTMLTextAreaElement).value = userSub?.blockers.join('\n');
+			}
+		}
+		fetchInitial().catch(console.error);
+	}, []);
+
+	useEffect(() => {
 		if (!process.env.NEXT_PUBLIC_WEBSOCKET_URL) throw new Error("NEXT_PUBLIC_WEBSOCKET_URL not set");
 		const websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/session/${props.sessionId}`);
 		websocket.onmessage = (event) => {
@@ -34,20 +60,6 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		}
 	}, []);
 
-	useEffect(() => {
-		const userSub = submissions.find((val) => val.user_id === +props.userId);
-		if (userSub?.yesterday) {
-			(document.getElementById("yesterday_box") as HTMLTextAreaElement).value = userSub?.yesterday.join('\n');
-		}
-		if (userSub?.today) {
-			(document.getElementById("today_box") as HTMLTextAreaElement).value = userSub?.today.join('\n');
-		}
-		if (userSub?.blockers) {
-			(document.getElementById("blockers_box") as HTMLTextAreaElement).value = userSub?.blockers.join('\n');
-		}
-
-
-	}, [submissions]);
 
 	function openModal() {
 		(document.getElementById('sub_modal') as HTMLDialogElement).showModal();

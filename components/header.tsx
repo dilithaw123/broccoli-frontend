@@ -1,15 +1,16 @@
+"use server";
+
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation";
 
 async function logout() {
-	"use server";
 	cookies().delete("session");
 	cookies().delete("access_token");
 	cookies().delete("refresh_token");
 	redirect("/login");
 }
 
-export function Header(): JSX.Element {
+export async function Header() {
 	const session = cookies().get("session");
 	return (
 		<div className="navbar items-end flex flex w-full">

@@ -2,7 +2,7 @@
 const nextConfig = {
   experimental: {
     serverActions: {
-      allowedOrigins: ["localhost:9090"],
+      allowedOrigins: ["localhost:9090", "192.168.1.192:9090"],
     },
   },
 };

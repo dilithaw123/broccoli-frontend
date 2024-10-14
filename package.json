@@ -3,7 +3,8 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "cp .env.loc .env && next dev",
+    "lan" :"cp .env.lan .env && next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
