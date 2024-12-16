@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 type Props = {
 	sessionId: number;
@@ -19,7 +19,7 @@ type UserSubmission = {
 
 export default function SessionCarousel(props: Props): JSX.Element {
 	const [submissions, setSubmissions] = useState<UserSubmission[]>([]);
-	const websocket = new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/session/${props.sessionId}`);
+	const websocket = useRef(new WebSocket(`${process.env.NEXT_PUBLIC_WEBSOCKET_URL}/session/${props.sessionId}`));
 
 	useEffect(() => {
 		const fetchInitial = async () => {
@@ -49,7 +49,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 
 	useEffect(() => {
 		if (!process.env.NEXT_PUBLIC_WEBSOCKET_URL) throw new Error("NEXT_PUBLIC_WEBSOCKET_URL not set");
-		websocket.onmessage = (event) => {
+		websocket.current.onmessage = (event) => {
 			const data = JSON.parse(event.data);
 			if (Array.isArray(data)) {
 				setSubmissions(data);
@@ -59,7 +59,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 			}
 		}
 		return () => {
-			websocket.close();
+			websocket.current.close();
 		}
 	}, []);
 
@@ -116,7 +116,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 		const data = {
 			user_id: user_id,
 		};
-		websocket.send(JSON.stringify(data));
+		websocket.current.send(JSON.stringify(data));
 	}
 
 	return (
