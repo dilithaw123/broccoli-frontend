@@ -110,7 +110,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 	}
 
 	async function sendUserChange(event: React.MouseEvent<HTMLAnchorElement>) {
-		const user_id = submissions.find(sub => sub.name === event.currentTarget.href.slice(1))?.user_id;
+		const user_id = submissions.find(sub => sub.name === event.currentTarget.hash.slice(1))?.user_id;
 		if (!user_id) {
 			return;
 		}
