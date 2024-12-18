@@ -19,6 +19,7 @@ type UserSubmission = {
 
 export default function SessionCarousel(props: Props): JSX.Element {
 	const [submissions, setSubmissions] = useState<UserSubmission[]>([]);
+	const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 	const websocket = useRef<WebSocket | null>(null);
 
 	useEffect(() => {
@@ -55,14 +56,23 @@ export default function SessionCarousel(props: Props): JSX.Element {
 			if (Array.isArray(data)) {
 				setSubmissions(data);
 			} else {
-				const user_id = data.user_id;
-				document.querySelector<HTMLAnchorElement>(`#${submissions.find(sub => sub.user_id === user_id)?.name}`)?.click();
+				const receivedUserId = data.user_id;
+				setCurrentUserId(receivedUserId);
 			}
 		}
 		return () => {
 			websocket.current?.close();
 		}
 	}, []);
+
+	useEffect(() => {
+		if (currentUserId) {
+			const name = submissions.find(sub => sub.user_id === currentUserId)?.name
+			const targetElement = document.querySelector<HTMLAnchorElement>(`a[href="#${name}"]`);
+			targetElement?.click();
+		}
+	}, [currentUserId, submissions]);
+
 
 
 	function openModal() {
@@ -110,8 +120,12 @@ export default function SessionCarousel(props: Props): JSX.Element {
 	}
 
 	async function sendUserChange(event: React.MouseEvent<HTMLAnchorElement>) {
-		const user_id = submissions.find(sub => sub.name === event.currentTarget.hash.slice(1))?.user_id;
+		const name = decodeURI(event.currentTarget.hash.slice(1));
+		const user_id = submissions.find(sub => sub.name === name)?.user_id;
 		if (!user_id) {
+			return;
+		}
+		if (user_id === currentUserId) {
 			return;
 		}
 		const data = {
@@ -184,7 +198,7 @@ export default function SessionCarousel(props: Props): JSX.Element {
 				{submissions.length > 1 &&
 					<div className="flex w-full justify-center gap-2 py-2">
 						{submissions.map((submission) => (
-							<a key={`#${submission.name}`} href={`#${submission.name}`} className="btn btn-xs" onClick={sendUserChange}>{submission.name}</a>
+							<a key={`#${submission.name}`} href={`#${submission.name}`} className="btn btn-xs" onClick={sendUserChange} >{submission.name}</a>
 						))}
 					</div>
 				}
