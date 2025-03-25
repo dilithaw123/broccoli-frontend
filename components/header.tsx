@@ -1,10 +1,11 @@
 "use server";
 
 import { cookies } from "next/headers"
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
 async function logout() {
-	"use server"
+	"use server";
 	(await cookies()).delete("session");
 	(await cookies()).delete("access_token");
 	(await cookies()).delete("refresh_token");
@@ -16,7 +17,7 @@ export async function Header() {
 	return (
 		<div className="navbar items-end flex flex w-full">
 			<h1 className="text-6xl mr-10 place-self-start">Broccoli Standups</h1>
-			<a href="/" className="text-5xl mr-10 place-self-end">Home</a>
+			<Link href="/" className="text-5xl mr-10 place-self-end">Home</Link>
 			{session &&
 				<form className="text-5xl place-self-end" action={logout}>
 					<button className="navbar-button" id="logout" type="submit">Logout</button>
