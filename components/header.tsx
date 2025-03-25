@@ -5,14 +5,14 @@ import { redirect } from "next/navigation";
 
 async function logout() {
 	"use server"
-	cookies().delete("session");
-	cookies().delete("access_token");
-	cookies().delete("refresh_token");
+	(await cookies()).delete("session");
+	(await cookies()).delete("access_token");
+	(await cookies()).delete("refresh_token");
 	redirect("/login");
 }
 
 export async function Header() {
-	const session = cookies().get("session");
+	const session = (await cookies()).get("session");
 	return (
 		<div className="navbar items-end flex flex w-full">
 			<h1 className="text-6xl mr-10 place-self-start">Broccoli Standups</h1>

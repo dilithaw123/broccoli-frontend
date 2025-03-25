@@ -25,7 +25,7 @@ async function getGroups(user: User): Promise<Group[]> {
   const response = await fetch(`${process.env.BACKEND_URL}/user/group?email=${user.email}`, {
     method: "GET",
     headers: {
-      Cookie: cookies().toString()
+      Cookie: (await cookies()).toString()
     },
   });
   if (!response.ok) {
@@ -36,7 +36,7 @@ async function getGroups(user: User): Promise<Group[]> {
 }
 
 export default async function Home() {
-  const session = cookies().get("session");
+  const session = (await cookies()).get("session");
   const user: User = JSON.parse(session?.value || "{}");
   const groups = await getGroups(user);
   return (

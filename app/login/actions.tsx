@@ -37,17 +37,17 @@ export async function handleSubmit(formData: FormData) {
     }
   }
   const json: response = await response.json();
-  cookies().set("session", JSON.stringify(json.user), {
+  (await cookies()).set("session", JSON.stringify(json.user), {
     httpOnly: true,
     sameSite: "strict",
     maxAge: 3600 * 24 * 30,
   });
-  cookies().set("access_token", json.access_token, {
+  (await cookies()).set("access_token", json.access_token, {
     httpOnly: true,
     sameSite: "strict",
     maxAge: 3600,
   });
-  cookies().set("refresh_token", json.refresh_token, {
+  (await cookies()).set("refresh_token", json.refresh_token, {
     httpOnly: true,
     sameSite: "strict",
     maxAge: 3600 * 24 * 30,

@@ -11,7 +11,7 @@ async function startSession(groupId: string): Promise<number> {
 	const response = await fetch(`${process.env.BACKEND_URL}/session`, {
 		method: "POST", headers: {
 			"Content-Type": "application/json",
-			Cookie: cookies().toString(),
+			Cookie: (await cookies()).toString(),
 		},
 		body: JSON.stringify({ groupId: groupIdNumber }),
 
@@ -24,7 +24,7 @@ async function startSession(groupId: string): Promise<number> {
 }
 
 async function getUserIdFromCookies() {
-	const token = cookies().get("session");
+	const token = (await cookies()).get("session");
 	if (!token) {
 		throw new Error("Missing session token");
 	}
@@ -43,9 +43,9 @@ type SearchParams = {
 	group: string;
 }
 
-export default async function SessionPage(props: { params: Params, searchParams: SearchParams }) {
-	const groupName = props.searchParams.group;
-	const groupId = props.params.id;
+export default async function SessionPage(props: { params: Promise<Params>, searchParams: Promise<SearchParams> }) {
+	const groupName = (await props.searchParams).group;
+	const groupId = (await props.params).id;
 	const sessionId = await startSession(groupId);
 	const userId = await getUserIdFromCookies();
 
